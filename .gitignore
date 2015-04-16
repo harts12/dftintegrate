@@ -1,0 +1,10 @@
+# The file that Mac OS X always makes
+.DS_Store
+
+# Byte code
+*.pyc
+
+# Emacs temp files
+\#
+.\#
+*~
