@@ -7,13 +7,13 @@ except ImportError:
     print("warning: pypandoc module not found, could not convert Markdown to RST")
     read_md = lambda f: open(f, 'r').read()
 
-setup(name='DFT_integration',
-      version='0.0.1',
+setup(name='dftintegrate',
+      version='0.0.6',
       description='Integrate DFT data',
       long_description=read_md('README.md'),
       author='Matthew M Burbidge',
       author_email='mmburbidge@gmail.com',
-      url='https://github.com/mmb90/DFT_integration',
+      url='https://github.com/mmb90/dftintegrate',
       license='MIT',
       install_requires=[
           "argparse",
@@ -28,6 +28,10 @@ setup(name='DFT_integration',
           'Natural Language :: English',
           'License :: OSI Approved :: MIT License',
           'Operating System :: MacOS',
+          'Programming Language :: Python :: 2.7',
+          'Programming Language :: Python :: 3',
+          'Programming Language :: Python :: 3.2',
+          'Programming Language :: Python :: 3.3',
           'Programming Language :: Python :: 3.4',
           'Topic :: Scientific/Engineering :: Information Analysis'],
       entry_points={

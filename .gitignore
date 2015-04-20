@@ -2,9 +2,15 @@
 .DS_Store
 
 # Byte code
+__pycache__
 *.pyc
 
 # Emacs temp files
 \#
 .\#
 *~
+
+# Packaging
+dist/
+*.egg
+*.egg-info/

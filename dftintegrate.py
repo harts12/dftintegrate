@@ -84,7 +84,7 @@ def extract_vasp(path='./'):
         vaspdata.VASPData(path, kmax=kmax)
 
 
-def read_data(path='./'):
+def read_data(args, path='./'):
     """
     Call readdata.py to read kmax.dat, kpts_eigenvals.dat, and
     symops_trans.dat and creat data.json to be given to fitdata.py.
@@ -114,7 +114,7 @@ def read_data(path='./'):
         readdata.ReadData(path)
 
 
-def get_fit(path='./'):
+def get_fit(args, path='./'):
     """
     Call fitdata.py to generate a fit.json in the path indecated.
     Default path is the current directory.
@@ -128,4 +128,4 @@ def get_fit(path='./'):
 if __name__ == '__main__':
     args = _parse_args()
     if args.fit:
-        get_fit()
+        get_fit(args)
