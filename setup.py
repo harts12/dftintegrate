@@ -29,8 +29,10 @@ setup(name='DFT_integration',
           'License :: OSI Approved :: MIT License',
           'Operating System :: MacOS',
           'Programming Language :: Python :: 3.4',
-          'Topic :: Scientific/Engineering :: Information Analysis']
-      )
+          'Topic :: Scientific/Engineering :: Information Analysis'],
+      entry_points={
+          'console_scripts': [
+              'dftintegrate = dftintegrate.dftintegrate:main']})
 
 # packages=['fortpy', 'fortpy.parsers', 'fortpy.isense', 'fortpy.testing',
 #           'fortpy.templates', 'fortpy.interop',

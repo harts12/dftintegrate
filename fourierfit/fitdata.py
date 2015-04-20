@@ -64,7 +64,7 @@ class FitData(object):
 
         Keyword Arguments::
           loaddata -- Boolean that says to automatically load data from
-            fit.json. This is useful if I want to test only one function.
+            data.json. This is useful if I want to test only one function.
             Default True.
 
           getfit -- Boolean that says to automatically run _get_fit.
