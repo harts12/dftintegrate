@@ -1,3 +1,5 @@
+#!/usr/bin/python
+
 from setuptools import setup
 
 try:
@@ -8,7 +10,7 @@ except ImportError:
     read_md = lambda f: open(f, 'r').read()
 
 setup(name='dftintegrate',
-      version='0.0.14',
+      version='0.0.15',
       description='Integrate DFT data',
       long_description=read_md('README.md'),
       author='Matthew M Burbidge',
