@@ -8,7 +8,7 @@ except ImportError:
     read_md = lambda f: open(f, 'r').read()
 
 setup(name='dftintegrate',
-      version='0.0.7',
+      version='0.0.8',
       description='Integrate DFT data',
       long_description=read_md('README.md'),
       author='Matthew M Burbidge',
@@ -36,13 +36,12 @@ setup(name='dftintegrate',
           'Topic :: Scientific/Engineering :: Information Analysis'],
       entry_points={
           'console_scripts': [
-              'dftintegrate = dftintegrate.dftintegrate:main']})
-
-# packages=['fortpy', 'fortpy.parsers', 'fortpy.isense', 'fortpy.testing',
-#           'fortpy.templates', 'fortpy.interop',
-#           'fortpy.printing' ],
-# scripts=['fortpy/scripts/compare.py', 'fortpy/scripts/convert.py', 'fortpy/scripts/runtests.py',
-#          'fortpy/scripts/analyze.py', 'fortpy/scripts/parse.py', 'fortpy/scripts/ftypes.py'],
-# package_data={'fortpy': ['isense/builtin.xml']},
-# include_package_data=True,S
-# )
+              'dftintegrate = dftintegrate.dftintegrate:main']},
+      packages=['dftintegrate', 'dftintegrate.fourierfit'],
+      scripts=['dftintegrate/dftintegrate.py'],
+      package_data={'tests': ['test_input/Si2x2x2/*', 'test_input/Si_medium/*',
+                              'test_input/cubic/*', 'test_input/bcc/*',
+                              'test_input/fcc/*', 'test_input/cbf/*',
+                              'expected_output/Si2x2x2/*',
+                              'expected_output/Si_medium/*']},
+      include_package_data=True)

@@ -3,7 +3,7 @@
 import unittest
 
 from os import remove
-from fourierfit import vaspdata
+from dftintegrate.fourierfit import vaspdata
 
 
 class TestVASPDataSiMedium(unittest.TestCase):

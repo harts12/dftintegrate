@@ -9,7 +9,7 @@ from json import dump, load
 from scipy.linalg import lstsq
 from itertools import product
 
-from customserializer import tojson
+from ..customserializer import tojson
 
 
 class FitData(object):

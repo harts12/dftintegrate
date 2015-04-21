@@ -8,7 +8,7 @@ from shutil import rmtree
 from json import load
 from itertools import product
 
-from fourierfit import vaspdata, readdata, fitdata
+from dftintegrate.fourierfit import vaspdata, readdata, fitdata
 
 
 class TestFitDataSi2x2x2(unittest.TestCase):
