@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 
 import argparse
-import msg
 import os.path
 
 from fourierfit import vaspdata, readdata, fitdata
+from . import msg
 
 
 def examples():
