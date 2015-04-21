@@ -3,7 +3,7 @@
 import argparse
 import os.path
 
-from fourierfit import vaspdata, readdata, fitdata
+from .fourierfit import vaspdata, readdata, fitdata
 from . import msg
 
 
