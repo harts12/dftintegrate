@@ -1,10 +1,10 @@
-#!/usr/bin/python
+#!/usr/bin/env python
 
 import argparse
 import os.path
 
-from dftintegrate.fourierfit import vaspdata, readdata, fitdata
 from dftintegrate import msg
+from dftintegrate.fourierfit import vaspdata, readdata, fitdata
 
 
 def examples():
@@ -49,6 +49,7 @@ def _parse_args():
                         action='store_true')
     parser.add_argument('-fit', help='Generate the Fourier fit in fit.json.',
                         action='store_true')
+    parser.add_argument('-read', help='Generate data.json', action='store_true')
 
     args = parser.parse_args()
     if args.examples:
@@ -76,7 +77,7 @@ def extract_vasp(path='./'):
                  ' your own kmax.dat, see the README for more info.')
         kmax = False
     if bad:
-        msg.info('Is there the necessary VASP data in the specified directory?'
+        msg.info('The necessary VASP files are not in the specified directory.'
                  ' Note the default directory is your current working'
                  ' directory.')
         exit(0)
@@ -92,16 +93,15 @@ def read_data(args, path='./'):
     """
     bad = False
     if not os.path.exists(path+'kmax.dat'):
-        msg.info('kmax.dat does not exist.')
+        msg.info('kmax.dat does not exist, creating one.')
         bad = True
     if not os.path.exists(path+'kpts_eigenvals.dat'):
-        msg.info('kpts_eigenvals.dat does not exist.')
+        msg.info('kpts_eigenvals.dat does not exist, creating one.')
         bad = True
     if not os.path.exists(path+'symops_trans.dat'):
-        msg.info('symops_trans.dat does not exist.')
+        msg.info('symops_trans.dat does not exist, creating one.')
         bad = True
     if bad:
-        msg.info('Creating files that do not exist.')
         if args.vasp:
             extract_vasp()
         elif args.qe:
@@ -121,11 +121,13 @@ def get_fit(args, path='./'):
     """
     if not os.path.exists(path+'data.json'):
         msg.info('data.json does not exist, creating one.')
-        read_data()
+        read_data(args)
     fitdata.FitData(path)
 
 
-if __name__ == '__main__':
+def main():
     args = _parse_args()
     if args.fit:
         get_fit(args)
+    if args.read:
+        read_data(args)
