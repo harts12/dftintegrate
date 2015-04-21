@@ -3,8 +3,8 @@
 import argparse
 import os.path
 
-from dftintegrate.fourierfit import vaspdata, readdata, fitdata
-from dftintegrate import msg
+from dftintegrate.dftintegrate.fourierfit import vaspdata, readdata, fitdata
+from dftintegrate.dftintegrate import msg
 
 
 def examples():
