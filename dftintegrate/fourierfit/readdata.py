@@ -5,7 +5,6 @@ Classes::
 """
 
 import json
-from numpy import power
 from copy import deepcopy
 from ast import literal_eval
 from collections import defaultdict
