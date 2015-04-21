@@ -1,10 +1,10 @@
-#!/usr/bin/env python3
+#!/usr/bin/python
 
 import argparse
 import os.path
 
-from dftintegrate.dftintegrate.fourierfit import vaspdata, readdata, fitdata
-from dftintegrate.dftintegrate import msg
+from dftintegrate.fourierfit import vaspdata, readdata, fitdata
+from dftintegrate import msg
 
 
 def examples():
