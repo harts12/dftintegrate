@@ -10,7 +10,7 @@ except ImportError:
     read_md = lambda f: open(f, 'r').read()
 
 setup(name='dftintegrate',
-      version='0.0.15',
+      version='0.0.16',
       description='Integrate DFT data',
       long_description=read_md('README.md'),
       author='Matthew M Burbidge',
