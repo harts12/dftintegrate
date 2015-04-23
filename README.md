@@ -8,6 +8,8 @@ it will try to generate them.
 One may also look at the code to see how to use it and import the modules to
 write their own main.
 
+Note this works with python3 only.
+
 ### Note on kmax and KPOINTS
 Because we are creating a fit out of data points we run up against the
 Nyquist frequency, meaning we can only have so high of a frequency based on
