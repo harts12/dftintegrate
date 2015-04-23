@@ -3,7 +3,7 @@
 import unittest
 
 from os import remove
-from dftintegrate.fourierfit import readdata, vaspdata
+from dftintegrate.fourier import readdata, vaspdata
 from json import load
 
 

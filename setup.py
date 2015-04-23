@@ -1,4 +1,5 @@
-#!/usr/bin/python
+#!/usr/bin/env python3
+
 
 from setuptools import setup
 
@@ -10,7 +11,7 @@ except ImportError:
     read_md = lambda f: open(f, 'r').read()
 
 setup(name='dftintegrate',
-      version='0.0.32',
+      version='0.0.35',
       description='Integrate DFT data',
       long_description=read_md('README.md'),
       author='Matthew M Burbidge',
@@ -30,10 +31,6 @@ setup(name='dftintegrate',
           'Natural Language :: English',
           'License :: OSI Approved :: MIT License',
           'Operating System :: MacOS',
-          'Programming Language :: Python :: 2.7',
-          'Programming Language :: Python :: 3',
-          'Programming Language :: Python :: 3.2',
-          'Programming Language :: Python :: 3.3',
           'Programming Language :: Python :: 3.4',
           'Topic :: Scientific/Engineering :: Information Analysis'],
       entry_points={
