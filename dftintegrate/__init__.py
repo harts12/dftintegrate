@@ -1,3 +1,3 @@
 __all__ = ["fourierfit"]
 
-import fourierfit
+from dftintegrate import fourierfit

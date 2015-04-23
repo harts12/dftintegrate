@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 import argparse
 import os.path
@@ -66,6 +66,7 @@ def extract_vasp(path='./'):
     indicated, default is current directory.
     """
     bad = False
+    kmax = True
     if not os.path.exists(path+'OUTCAR'):
         msg.err('OUTCAR does not exsist.')
         bad = True
@@ -110,8 +111,8 @@ def read_data(args, path='./'):
         else:
             msg.err('Please specify vasp or qe.')
             exit(0)
-    else:
-        readdata.ReadData(path)
+    readdata.ReadData(path)
+    msg.info('data.json created.')
 
 
 def get_fit(args, path='./'):
@@ -123,6 +124,7 @@ def get_fit(args, path='./'):
         msg.info('data.json does not exist, creating one.')
         read_data(args)
     fitdata.FitData(path)
+    msg.info('fit.json created.')
 
 
 def main():
@@ -131,3 +133,11 @@ def main():
         get_fit(args)
     if args.read:
         read_data(args)
+    elif not args.fit and not args.read:
+        msg.err('Need more command line arguments. You must specify a DFT code'
+                ' (-vasp or -qe) and an action i.e. -fit or -read.')
+        exit(0)
+
+
+if __name__ == '__main__':
+    main()

@@ -107,6 +107,9 @@ class FitData(object):
     def set_recips(self, recips):
         self.recips = recips
 
+    def set_series(self, series):
+        self.series = series
+
     def _get_fit(self):
         self.gen_recips()
         self.gen_series()

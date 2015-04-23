@@ -120,6 +120,7 @@ class TestFitDataGenSeries(unittest.TestCase):
         self.fit.set_recips(self.recips)
         self.fit.set_kgrid(self.kgrid)
         self.fit.gen_series()
+        self.fit.serialize()
         self._round_series()
         for i, row in enumerate(self.answer):
             self.assertCountEqual(self.answer[i], self.fit.series[i],
@@ -128,7 +129,7 @@ class TestFitDataGenSeries(unittest.TestCase):
     def test_gen_series_one(self):
         self.recips = {'(0, 0, 0)': [[0, 0, 0]]}
         self.kgrid = [[1, 1, 1]]
-        self.msg = 'one'
+        self.msg = 'Gen Series One'
         self.answer = [[1]]
         self._test_gen_series()
 
@@ -141,7 +142,7 @@ class TestFitDataGenSeries(unittest.TestCase):
                                      [0, -1, 0],
                                      [-1, 0, 0]]}
         self.kgrid = [[1, 1, 1]]
-        self.msg = 'two'
+        self.msg = 'Gen Series Two'
         self.answer = [[1, 6]]
         self._test_gen_series()
 
@@ -154,9 +155,39 @@ class TestFitDataGenSeries(unittest.TestCase):
                                      [0, -1, 0],
                                      [-1, 0, 0]]}
         self.kgrid = [[1/2, 1/2, 1/2], [1, 1, 1]]
-        self.msg = 'three'
+        self.msg = 'Gen Series Three'
         self.answer = [[1, -6], [1, 6]]
         self._test_gen_series()
+
+
+class TestFitDataSolveCoeffs(unittest.TestCase):
+
+    def setUp(self):
+        self.root = 'tests/'
+        mkdir(self.root+'temp_out/')
+        self.fit = fitdata.FitData(self.root+'temp_out/',
+                                   loaddata=False, getfit=False,
+                                   bandnum=1)
+
+    def tearDown(self):
+        rmtree(self.root+'temp_out/')
+
+    def _test_solve_coeffs(self):
+        self.fit.set_series(self.series)
+        self.fit.set_eigenvals(self.eigenvals)
+        self.fit.solve_coeffs()
+        self.fit.serialize()
+        self.assertEqual(self.answer_coeffs, self.fit.coeffs)
+        # self.assertEqual(self.answer_lstsq_err, self.fit.lstsq_err,
+        #                  self.msg + ' fail')
+
+    def test_solve_coeffs_one(self):
+        self.series = [[1]]
+        self.eigenvals = {'1': [1]}
+        self.msg = 'Solve Coeffs One'
+        self.answer_coeffs = {'1': np.array([1])}
+        self.answer_lstsq_err = {'1': np.array([])}
+        self._test_solve_coeffs()
 
 
 if __name__ == '__main__':
