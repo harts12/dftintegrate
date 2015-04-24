@@ -4,7 +4,7 @@ import argparse
 import os.path
 
 from dftintegrate import msg
-from dftintegrate.fourierfit import vaspdata, readdata, fitdata
+from dftintegrate.fourier import vaspdata, readdata, fitdata
 
 
 def examples():

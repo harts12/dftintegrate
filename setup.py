@@ -7,11 +7,12 @@ try:
     from pypandoc import convert
     read_md = lambda f: convert(f, 'rst')
 except ImportError:
-    print("warning: pypandoc module not found, could not convert Markdown to RST")
+    print("warning: pypandoc module not found, "
+          "could not convert Markdown to RST")
     read_md = lambda f: open(f, 'r').read()
 
 setup(name='dftintegrate',
-      version='0.0.35',
+      version='0.0.37',
       description='Integrate DFT data',
       long_description=read_md('README.md'),
       author='Matthew M Burbidge',
@@ -36,7 +37,7 @@ setup(name='dftintegrate',
       entry_points={
           'console_scripts': [
               'dftintegrate = dftintegrate.main:main']},
-      packages=['dftintegrate', 'dftintegrate.fourierfit'],
+      packages=['dftintegrate', 'dftintegrate.fourier'],
       scripts=['dftintegrate/main.py'],
       package_data={'tests': ['test_input/Si2x2x2/*', 'test_input/Si_medium/*',
                               'test_input/cubic/*', 'test_input/bcc/*',
