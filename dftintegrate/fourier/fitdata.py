@@ -1,7 +1,7 @@
-"""
-Classes::
-  FitData -- The FitData object fits a 3D function with a fourier
-    series.
+"""Classes::
+  FitData -- The FitData class is a collection of
+    functions that fit a 3D function with a fourier series.
+
 """
 
 import numpy as np
@@ -13,10 +13,7 @@ from ..customserializer import tojson
 
 
 class FitData(object):
-    """Fit a periodic 3D function represented by a json file created by
-     the ReadData object with fourier series, repersent the fit as an
-     object.
-
+    """
     Fit a periodic 3D function represented by a json file created by
     the ReadData object with fourier series, repersent the fit as an
     object.
@@ -25,6 +22,31 @@ class FitData(object):
 
     Variables::
       data -- Data to fit represented in data.json.
+
+      kmax -- A number that determines how many terms can be used
+        in the fourier representation based on the density of the
+        sample points.
+
+      kgrid -- A list of lists. Each inner list is a triplet that
+        represents a k-point. The outer list is the collection of
+        the triplets or k-points and therefore represents the k-kgrid.
+        Note these are the irreducibl k-points.
+
+      weights -- A list of floats. Since kgrid represents the
+        irreducible wedge, each k-point has a weight that
+        represents in a way how degenerate it is. These
+        are in the same order as their corresponding k-point
+        in kgrid.
+
+      eigenvals -- A dictionary. At each k-point there is an
+        eigenvalue (energy) for each band that was calculated. The
+        keys are the band number and the values are a list of
+        energies for that band at each k-point.
+
+      symops -- A triple nested list. The outer list is a collection
+        matrices that represent the symmetry operators for the
+        system calculated. The inner double nested lists are
+        representations of the matrices.
 
       series -- Matrix representation of the series. "A" in the equation
         to solve.
@@ -39,7 +61,8 @@ class FitData(object):
 
     Funtions::
       set_(kgrid, eigenvals, symops, kmax) -- Set (kgrid, eigenvals,
-        symops, kmax) in case loaddata is false.
+        symops, kmax) in case loaddata is false. Intended use is
+        for testing.
 
       _get_fit -- Call gen_recips, gen_series, solve_coeffs, and
         serialize.

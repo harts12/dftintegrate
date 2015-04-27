@@ -15,3 +15,15 @@ def tojson(obj):
                 '__value__': list(obj)}
 
     raise TypeError(repr(obj) + 'is not JSON serializable')
+
+
+def fromjson(json_obj):
+    if '__class__' in json_obj:
+        if json_obj['__class__'] == 'numpy.int64':
+            return numpy.int64(json_obj['__value__'])
+
+        if json_obj['__class__'] == 'numpy.complex128':
+            return numpy.complex128(json_obj['__value__'])
+
+        if json_obj['__class__'] == 'numpy.ndarray':
+            return numpy.ndarray(json_obj['__value__'])
