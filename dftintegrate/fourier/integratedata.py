@@ -8,6 +8,7 @@ import numpy as np
 
 from itertools import product
 from json import load, dump
+from scipy.special.orthogonal import p_roots
 
 from ..customserializer import tojson, fromjson
 from dftintegrate.fourier import fitdata
@@ -68,7 +69,7 @@ class IntegrateData(object):
             bands in fit.json.
         """
         self.name = name_of_directory
-        self.points = points
+        self.points = int(points)
         self.bandnum = bandnum
         if loaddata:
             with open(self.name+'fit.json', mode='r',
@@ -124,6 +125,18 @@ class IntegrateData(object):
         integral = sum(b*volume)
         self.rectangleintegrals.append(integral)
 
+    def _gaussintegral(self):
+        """
+        Integrate over the interval 0 to 1/2 then multiply by 8 (2 cubed),
+        since we have even functions. Evaluate the fit on that kgid,
+        multiply function value by the weights.
+
+        """
+        b = self._evaluatefit()
+        integral = 8*np.power((self.end-self.start)/2,
+                              3)*sum(np.multiply(b, self.weights))
+        self.gaussintegrals.append(integral)
+
     def rectangles(self):
         """Generate a grid to evaluate the function on, the points will be
         used as the midpoints for our rectangle rule. Then run the
@@ -137,19 +150,44 @@ class IntegrateData(object):
             for num in range(1, len(self.coeffs.keys())+1):
                 self.num = str(num)
                 self._rectangleintegral()
-
         else:
             for num in range(1, self.bandnum+1):
                 self.num = str(num)
                 self._rectangleintegral()
 
     def gauss(self):
-        pass
+        """
+        Integrate over the interval 0 to 1/2. Generate the grid to
+        evaluate the function on with scipy.special.orthogonal's
+        p_roots, also generates the weights. p_roots gave the gauss
+        points in 1d so we make kgrid 3D with itertools.product, then
+        shift from 0 to 1, to, 0 to 1/2. Similarly make the weights
+        3D. Then run the loops according to haw many bands we are
+        calculating.
+
+        """
+        self.start = 0
+        self.end = 0.5
+        self.kgrid, self.weights = p_roots(self.points)
+        self.kgrid = np.real(self.kgrid)
+        self.kgrid = np.asarray([x for x in product(self.kgrid, repeat=3)])
+        self.kgrid = (self.end-self.start)*(self.kgrid+1)/2.0 + self.start
+        self.weights = np.asarray([np.product(x) for x in
+                                   product(self.weights, repeat=3)])
+        if self.bandnum == 'all':
+            for num in range(1, len(self.coeffs.keys())+1):
+                self.num = str(num)
+                self._gaussintegral()
+        else:
+            for num in range(1, self.bandnum+1):
+                self.num = str(num)
+                self._gaussintegral()
 
     def serialize(self):
         integral_dict = {'rectangleintegrals': self.rectangleintegrals,
                          'totalrectangleintegral': sum(self.rectangleintegrals),
                          'gaussintegrals': self.gaussintegrals,
                          'totalgaussintegral': sum(self.gaussintegrals)}
-        with open(self.name+'integral.json', mode='w', encoding='utf-8') as outf:
+        with open(self.name+'integral.json', mode='w',
+                  encoding='utf-8') as outf:
             dump(integral_dict, outf, indent=2, default=tojson)

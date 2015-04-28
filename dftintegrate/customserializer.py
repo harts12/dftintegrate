@@ -23,7 +23,12 @@ def fromjson(json_obj):
             return numpy.int64(json_obj['__value__'])
 
         if json_obj['__class__'] == 'numpy.complex128':
-            return numpy.complex128(json_obj['__value__'])
+            temp = numpy.array(0+0j)
+            temp.real = json_obj['__value__'][0]
+            temp.imag = json_obj['__value__'][1]
+            return numpy.complex128(temp)
 
         if json_obj['__class__'] == 'numpy.ndarray':
-            return numpy.ndarray(json_obj['__value__'])
+            return numpy.asarray(json_obj['__value__'])
+
+    return json_obj

@@ -1,6 +1,6 @@
 {
-    "rectangleintegrals": [0],
+    "rectangleintegrals": [],
     "totalrectangleintegral": 0,
-    "gaussintegrals": [],
+    "gaussintegrals": [0],
     "totalgaussintegral": 0
 }
