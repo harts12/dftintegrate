@@ -6,9 +6,9 @@ __pycache__
 *.pyc
 
 # Emacs temp files
-\#
-.\#
-*~
+\#*#
+*.*~
+.\#*
 
 # Packaging
 dist/

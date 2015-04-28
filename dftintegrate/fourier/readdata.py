@@ -18,6 +18,10 @@ class ReadData(object):
     Variables::
       name -- A string containing the name to the extracted data.
 
+      kmax -- A number that determines how many terms can be used
+        in the fourier representation based on the density of the
+        sample points.
+
       kgrid -- A list of lists. Each inner list is a triplet that
         represents a k-point. The outer list is the collection of
         the triplets or k-points and therefore represents the k-kgrid.
