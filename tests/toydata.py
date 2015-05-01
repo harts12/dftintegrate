@@ -2,24 +2,17 @@
 """Produce kpts_egienvals.dat and kmax.dat for some toy functions for
 testing. symops_trans.dat is simply pasted in the right directory
 by the user.
-
 Classes:
   ToyFunction -- Parent class to facilitate specific cases below.
-
   Cubic -- Represent exp(cos(2pix)+cos(2piy)+cos(2piz))
-
   FCC -- Represent exp(cos(2pi(x+y+z))+cos(2pi(-x+y+z))+
                        cos(2pi(x-y+z))+cos(2pi(x+y-z)))
-
   BCC -- Represent exp(cos(2pi(x+y))+cos(2pi(y+z))+cos(2pi(x+z))+
                        cos(2pi(x-y))+cos(2pi(y-z))+cos(2pi(x-z)))
-
   CBF -- Combine cubic, fcc, and bcc to make a function with three
     energy bands.
-
   ToyData -- Call the toy function classes to generate .dat (txt) files
     from analytic test functions for readata.py to use.
-
 """
 import numpy as np
 from itertools import product
