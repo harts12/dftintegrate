@@ -109,6 +109,7 @@ class IntegrateData(object):
         if A is None:
             fitdata.FitData.gen_series(self)
             A = self.series
+        print("Things being stored in dictionaries is messing up the dot product I think because the order changes so the answer comes out different all the time.")
         return(np.dot(A, self.coeffs[self.num]))
 
     def _rectangleintegral(self, b=None):

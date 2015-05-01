@@ -60,10 +60,6 @@ class FitData(object):
       lstsq_err -- Total least squares error for the fit.
 
     Funtions::
-      set_(kgrid, eigenvals, symops, kmax) -- Set (kgrid, eigenvals,
-        symops, kmax) in case loaddata is false. Intended use is
-        for testing.
-
       _get_fit -- Call gen_recips, gen_series, solve_coeffs, and
         serialize.
 
@@ -78,60 +74,26 @@ class FitData(object):
 
     """
 
-    def __init__(self, name_of_directory, loaddata=True, getfit=True,
-                 bandnum=4):
+    def __init__(self, name_of_directory, bandnum='all'):
         """
         Arguments::
           name_of_directory -- path to directory that contains the
             output from readdata.py
 
         Keyword Arguments::
-          loaddata -- Boolean that says to automatically load data from
-            data.json. This is useful if I want to test only one function.
-            Default True.
-
-          getfit -- Boolean that says to automatically run _get_fit.
-            This is useful if I want to test only one function. Also
-            determines auto serialize. Default True.
-
-          bandnum -- Number of bands to fit. Default 4.
+          bandnum -- Number of bands to fit. Default is to fit all bands
+            in data.json.
         """
-        self.name = name_of_directory
+        self.name = name_of_directory+'/'
         self.bandnum = bandnum
-        if loaddata:
-            with open(self.name+'data.json', mode='r',
-                      encoding='utf-8') as inf:
-                self.data = load(inf)
-            self.kgrid = self.data['kgrid']
-            self.eigenvals = self.data['eigenvals']
-            self.symops = self.data['symops']
-            self.kmax = int(self.data['kmax'])
-        if getfit:
-            self._get_fit()
-        else:
-            # Set to None so serialize still works if needed.
-            self.coeffs = None
-            self.recips = None
-            self.series = None
-            self.lstsq_err = None
-
-    def set_kgrid(self, kgrid):
-        self.kgrid = kgrid
-
-    def set_eigenvals(self, eigenvals):
-        self.eigenvals = eigenvals
-
-    def set_symops(self, symops):
-        self.symops = symops
-
-    def set_kmax(self, kmax):
-        self.kmax = kmax
-
-    def set_recips(self, recips):
-        self.recips = recips
-
-    def set_series(self, series):
-        self.series = series
+        with open(self.name+'data.json', mode='r',
+                  encoding='utf-8') as inf:
+            self.data = load(inf)
+        self.kgrid = self.data['kgrid']
+        self.eigenvals = self.data['eigenvals']
+        self.symops = self.data['symops']
+        self.kmax = int(self.data['kmax'])
+        self._get_fit()
 
     def _get_fit(self):
         self.gen_recips()
@@ -188,8 +150,8 @@ class FitData(object):
         In the equation A x = b where A is a matrix and x and b are
         column vectors, this function generates A. We use the matrix
         equation to fit the 3D function represented by kgrid and
-        eigenvals. x is the coefficients to the complex exponential and
-        b is the values of the function. Each entry in A is like
+        eigenvals. x is the coefficients to the complex exponentials and
+        b contains the values of the function. Each entry in A is like
         exp(i2piG.r).
         """
         series = []
@@ -197,7 +159,7 @@ class FitData(object):
         pi = np.pi
         for kpt in self.kgrid:
             row = []
-            for k, v in self.recips.items():
+            for k, v in sorted(self.recips.items()):
                 # The 2pi comes from the dot product of real and reciprocal
                 # space lattice vectors. v is a list of reciprocal lattice
                 # vectors that are symetric and therefore need to have the same
@@ -218,6 +180,8 @@ class FitData(object):
         coeffs = {}
         lstsq_err = {}
         A = self.series
+        if self.bandnum == 'all':
+            self.bandnum = len(self.eigenvals.keys())
         for num in range(1, self.bandnum+1):
             num = str(num)
             b = self.eigenvals[num]
@@ -227,6 +191,6 @@ class FitData(object):
 
     def serialize(self):
         fit_dict = {'coefficients': self.coeffs, 'reciprocals': self.recips,
-                    'series': self.series, 'error': self.lstsq_err}
+                    'series': self.series}
         with open(self.name+'fit.json', mode='w', encoding='utf-8') as outf:
             dump(fit_dict, outf, indent=2, default=tojson)
