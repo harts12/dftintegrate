@@ -1,10 +1,10 @@
 {
   "reciprocals": {
-    "(1, 1, 1)": [
+    "(0, 0, 0)": [
       [
-        1,
-        1,
-        1
+        0,
+        0,
+        0
       ]
     ],
     "(0, 0, 1)": [
@@ -41,156 +41,166 @@
         0
       ]
     ],
-    "(0, 0, 0)": [
+    "(1, 1, 1)": [
       [
-        0,
-        0,
-        0
+        1,
+        1,
+        1
       ]
+    ]
+  },
+  "coefficients": {
+    "1": [
+      {
+        "__class__": "complex",
+        "__value__": [
+          2.5,
+          0.0
+        ]
+      },
+      {
+        "__class__": "complex",
+        "__value__": [
+          -0.16666666666666666,
+          0.16666666666666669
+        ]
+      },
+      {
+        "__class__": "complex",
+        "__value__": [
+          -0.16666666666666666,
+          4.1633363423443364e-17
+        ]
+      },
+      {
+        "__class__": "complex",
+        "__value__": [
+          -0.4999999999999998,
+          -0.4999999999999998
+        ]
+      }
     ]
   },
   "series": [
     [
       {
+        "__class__": "complex",
         "__value__": [
           1.0,
           0.0
-        ],
-        "__class__": "complex"
+        ]
       },
       {
+        "__class__": "complex",
         "__value__": [
           3.0,
           0.0
-        ],
-        "__class__": "complex"
+        ]
       },
       {
+        "__class__": "complex",
         "__value__": [
           3.0,
           0.0
-        ],
-        "__class__": "complex"
+        ]
       },
       {
+        "__class__": "complex",
         "__value__": [
           1.0,
           0.0
-        ],
-        "__class__": "complex"
+        ]
       }
     ],
     [
       {
+        "__class__": "complex",
         "__value__": [
           1.0,
           0.0
-        ],
-        "__class__": "complex"
+        ]
       },
       {
+        "__class__": "complex",
         "__value__": [
           0.0,
           3.0
-        ],
-        "__class__": "complex"
+        ]
       },
       {
+        "__class__": "complex",
         "__value__": [
           -3.0,
           0.0
-        ],
-        "__class__": "complex"
+        ]
       },
       {
+        "__class__": "complex",
         "__value__": [
           0.0,
           -1.0
-        ],
-        "__class__": "complex"
+        ]
       }
     ],
     [
       {
+        "__class__": "complex",
         "__value__": [
           1.0,
           0.0
-        ],
-        "__class__": "complex"
+        ]
       },
       {
+        "__class__": "complex",
         "__value__": [
           -3.0,
           0.0
-        ],
-        "__class__": "complex"
+        ]
       },
       {
+        "__class__": "complex",
         "__value__": [
           3.0,
           0.0
-        ],
-        "__class__": "complex"
+        ]
       },
       {
+        "__class__": "complex",
         "__value__": [
           -1.0,
           0.0
-        ],
-        "__class__": "complex"
+        ]
       }
     ],
     [
       {
+        "__class__": "complex",
         "__value__": [
           1.0,
           0.0
-        ],
-        "__class__": "complex"
+        ]
       },
       {
+        "__class__": "complex",
         "__value__": [
           0.0,
           -3.0
-        ],
-        "__class__": "complex"
+        ]
       },
       {
+        "__class__": "complex",
         "__value__": [
           -3.0,
           0.0
-        ],
-        "__class__": "complex"
+        ]
       },
       {
+        "__class__": "complex",
         "__value__": [
           0.0,
           1.0
-        ],
-        "__class__": "complex"
+        ]
       }
     ]
-  ],
-  "coefficients": [
-    2.5,
-    0.0,
-    -0.16666667,
-    {
-      "__value__": [
-        0.0,
-        0.166666667
-      ],
-      "__class__": "complex"
-    },
-    -0.16666667,
-    0,
-    -0.5,
-    {
-      "__value__": [
-        -0.0,
-        -0.5
-      ],
-      "__class__": "complex"
-    }
   ]
 }

@@ -1,27 +1,26 @@
 #!/usr/bin/env python3
 
 import unittest
-import json
+import os
 
+from tests import testfunctions
 from dftintegrate.fourier import readdata
 
 
-class TestCreateDataJson(unittest.TestCase):
+class TestMakeDataJson(unittest.TestCase, testfunctions.TestFunctions):
 
     def setUp(self):
-        self.cases = [str(x) for x in range(1, 2)]
-        self.root = './tests/test_fourier/test_makedatajson/'
-
-    def readfile(self, case, check_or_ans, filename):
-        with open(self.root+check_or_ans+'/test'+case+'/'+filename+'.json',
-                  'r', encoding='utf-8') as inf:
-            return json.load(inf)
+        print('Testing making data.json.')
+        self.root = './tests/fourier/makedatajson/'
+        num = len([name for name in os.listdir(self.root+'tocheck/')])
+        self.cases = [str(x) for x in range(1, num+1)]
 
     def test_runtestcases(self):
         for case in self.cases:
+            print('  Testing case '+case+'...')
             readdata.ReadData(self.root+'tocheck/test'+case)
-            answer = self.readfile(case, 'answer', 'data')
-            tocheck = self.readfile(case, 'tocheck', 'data')
+            answer = self.readjson(case, 'answer', 'data')
+            tocheck = self.readjson(case, 'tocheck', 'data')
             weights_ans = answer['weights']
             weights_tocheck = tocheck['weights']
             kmax_ans = answer['kmax']
@@ -43,3 +42,6 @@ class TestCreateDataJson(unittest.TestCase):
                              msg='symops case '+case)
             self.assertEqual(eigenvals_ans, eigenvals_tocheck,
                              msg='eigenvals case '+case)
+
+if __name__ == '__main__':
+    unittest.main()
