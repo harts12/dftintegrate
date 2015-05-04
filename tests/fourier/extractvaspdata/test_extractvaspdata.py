@@ -2,22 +2,21 @@
 
 import unittest
 
+from tests import testfunctions
 from dftintegrate.fourier import vaspdata
 
 
-class TestExtractingVASPDataToDatFiles(unittest.TestCase):
+class TestExtractingVASPDataToDatFiles(unittest.TestCase,
+                                       testfunctions.TestFunctions):
 
     def setUp(self):
+        print('Testing extracting VASP data to .dat files...')
         self.cases = [str(x) for x in range(1, 3)]
-        self.root = './tests/test_fourier/test_extractvaspdata/'
-
-    def readfile(self, case, check_or_ans, filename):
-        with open(self.root+check_or_ans+'/test'+case+'/'+filename+'.dat',
-                  'r') as inf:
-            return inf.read()
+        self.root = './tests/fourier/extractvaspdata/'
 
     def test_runtestcases(self):
         for case in self.cases:
+            print('  Testing case '+case+'...')
             vaspdata.VASPData(self.root+'tocheck/test'+case)
             kpts_eigenvals_ans = self.readfile(case, 'answer',
                                                'kpts_eigenvals')

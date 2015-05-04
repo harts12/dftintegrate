@@ -16,8 +16,8 @@ def examples():
                  ("dftintegrate -vasp -fit"),
                  ("Note, this will simply produce some json data files, namely"
                   " data.json and fit.json. Some intermediate files will also"
-                  " be created for the programs sake namely kmax.dat, "
-                  "kpts_eigenvals.dat, and symops_trans.dat.")),
+                  " be created for the programs sake namely kmax.dat,"
+                  " kpts_eigenvals.dat, and symops_trans.dat.")),
 
                 (("Integrate VASP data with rectangles and "
                   "Gaussian Quadrature."),
@@ -25,19 +25,19 @@ def examples():
                  ("Note, this will produce integral.json.")),
 
                 (("You only need to specify which DFT code was used if you"
-                  " need to create a data.json. If the json files needed "
-                  "already exsist and a DFT code was specified, the DFT "
-                  "code specifier will be ignored."),
+                  " need to create a data.json. If the json files needed"
+                  " already exsist and a DFT code was specified, the DFT"
+                  " code specifier will be ignored."),
                  ("dftintegrate -fit"),
                  ("Case 1, assuming I have a data.json I can just say -fit and"
                   " it will use the data.json. The only files that are over"
-                  " written are the ones that correspond to a flag. If fit "
-                  "is specified, fit.json will be over written but data.json"
+                  " written are the ones that correspond to a flag. If fit"
+                  " is specified, fit.json will be over written but data.json"
                   " will not be, if it exsists it is used.\nCase 2, assuming"
                   " there is no data.json an error will be raised saying I"
                   " need to specify a DFT code.\nCase 3, Look at Example 1,"
-                  " if there is already a data.json the vasp flag is "
-                  "ignored.")),
+                  " if there is already a data.json the vasp flag is"
+                  " ignored.")),
 
                 (("More features to come."),
                  ("Another Example"),
@@ -132,7 +132,7 @@ def read_data(args, path='./'):
                     'files created.')
             exit(0)
         else:
-            msg.err('Please specify vasp or qe.')
+            msg.err('Please specify vasp or qe, no files created.')
             exit(0)
     readdata.ReadData(path)
     if not args.quiet:
@@ -144,12 +144,13 @@ def get_fit(args, path='./'):
     Call fitdata.py to generate a fit.json in the indicated
     directory. Default path is the current directory.
     """
-    if os.path.exists(path+'data.json') and not args.read:
-        if not args.quiet:
-            msg.warn('You specified vasp/qe but there is already a data.json'
-                     ', the vasp/qe flag will be ignored. If you\'d like to '
-                     'make a new data.json you can force it with the read'
-                     ' flag.')
+    if args.vasp or args.qe:
+        if os.path.exists(path+'data.json') and not args.read:
+            if not args.quiet:
+                msg.warn('You specified vasp/qe but there is already'
+                         ' a data.json, the vasp/qe flag will be ignored.'
+                         ' If you\'d like to make a new data.json you can'
+                         ' force it with the read flag.')
     if not os.path.exists(path+'data.json'):
         if not args.quiet:
             msg.info('data.json does not exist, attempting to create.')
@@ -164,13 +165,15 @@ def integrate(args, path='./'):
     Call integrate.py to generate an integral.json in the indicated
     directory. Default path is the current directory.
     """
-    if os.path.exists(path+'fit.json') and not args.read:
-        if not args.quiet:
-            msg.warn('You specified vasp/qe but there is already a fit.json'
-                     ', the vasp/qe flag will be ignored. If you\'d like to '
-                     'make sure that vasp/qe data is being used you can force'
-                     ' it by using the read flag then the fit flag, or erase'
-                     ' data.json and fit.json.')
+    if args.vasp or args.qe:
+        if os.path.exists(path+'fit.json') and not args.read:
+            if not args.quiet:
+                msg.warn('You specified vasp/qe but there is already a'
+                         ' fit.json, the vasp/qe flag will be ignored.'
+                         ' If you\'d like to make sure that vasp/qe data'
+                         ' is being used you can force it by using the read'
+                         ' flag then the fit flag, or erase data.json and'
+                         ' fit.json.')
     if not os.path.exists(path+'fit.json'):
         if not args.quiet:
             msg.info('fit.json does not exist, attempting to create.')
@@ -188,9 +191,9 @@ def main():
         get_fit(args)
     if args.integrate:
         if not args.points:
-            msg.err('If -integrate was specified you also need to specify '
-                    '-points for the number of integration points. Example '
-                    '-points 10.')
+            msg.err('If -integrate was specified you also need to specify'
+                    ' -points for the number of integration points. Example'
+                    ' -points 10.')
             exit(0)
         integrate(args)
     elif not args.fit and not args.read and not args.integrate:
