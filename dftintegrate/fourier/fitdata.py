@@ -9,7 +9,7 @@ from json import dump, load
 from scipy.linalg import lstsq
 from itertools import product
 
-from ..customserializer import tojson
+from dftintegrate import customserializer as cs
 
 
 class FitData(object):
@@ -21,6 +21,10 @@ class FitData(object):
     Solve A x = b where A is a matrix and x and b are column vectors.
 
     Variables::
+      name -- Path to directory with data to work on.
+
+      bandnum -- Number of bands to fit.
+
       data -- Data to fit represented in data.json.
 
       kmax -- A number that determines how many terms can be used
@@ -182,6 +186,8 @@ class FitData(object):
         A = self.series
         if self.bandnum == 'all':
             self.bandnum = len(self.eigenvals.keys())
+        else:
+            self.bandnum = int(self.bandnum)
         for num in range(1, self.bandnum+1):
             num = str(num)
             b = self.eigenvals[num]
@@ -193,4 +199,4 @@ class FitData(object):
         fit_dict = {'coefficients': self.coeffs, 'reciprocals': self.recips,
                     'series': self.series}
         with open(self.name+'fit.json', mode='w', encoding='utf-8') as outf:
-            dump(fit_dict, outf, indent=2, default=tojson)
+            dump(fit_dict, outf, indent=2, default=cs.tojson)

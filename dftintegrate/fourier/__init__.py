@@ -1,1 +1,1 @@
-__all__ = ["vaspdata", "readdata", "fitdata"]
+__all__ = ["vaspdata", "readdata", "fitdata", "integratedata", "converge"]
