@@ -40,9 +40,13 @@ def examples():
                   " if there is already a data.json the vasp flag is"
                   " ignored.")),
 
-                (("More features to come."),
-                 ("Another Example"),
-                 ("A note."))]
+                (("You can run a convergence test comparing integration"
+                  " with rectangles to integration with Gaussian"
+                  " quadrature."),
+                 ("dftintegrate -vasp -converge -points 10"),
+                 ("This will integrate the Fourier representation with"
+                  " 1 integration point, 2 points, 3, ..., 10. Then plot"
+                  " how fast each technique converges to the right answer."))]
     required = ("REQUIRED: VASP or Quantum Espresso output data")
     output = ("RETURNS: Creates json data files from the data. Also creates"
               " a few .dat text files for the programs sake, can be ignored")
