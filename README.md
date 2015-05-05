@@ -52,7 +52,8 @@ many data points we have. For this this reason the kmax variable
 exists. It is pulled from the KPOINTS file. The problem is the VASP
 user has a few ways of formatting their KPOINTS file. If the fourth
 line is the specification of the size of kgrid ie 12 12 12 then
-everything will work fine. If not the user will need to make their
-KPOINTS file look like that or they can make kmax.dat. If 12 12 12 was
-the grid than kmax = ceil(12/(2*sqrt(3))). dftintegrate automatically
-uses files if they exist so creating kmax.dat by hand will work.
+everything will work fine. Note it can ONLY be the three numbers, no
+comment after If not the user will need to make their KPOINTS file
+look like that or they can make kmax.dat. If 12 12 12 was the grid
+than kmax = ceil(12/(2*sqrt(3))). dftintegrate automatically uses
+files if they exist so creating kmax.dat by hand will work.
