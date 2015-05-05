@@ -23,35 +23,36 @@ can be integrated with rectangles or Gaussian quadrature. Convergence tests can 
 run that compare the convergence of rectangles to Gauss.
 
 ### Examples
-1. Fit VASP data with Fourier Series.
-    dftintegrate -vasp -fit
-
-Note, this will simply produce some json data files, namely data.json and fit.json. Some intermediate files will also be created for the programs sake namely kmax.dat, kpts\_eigenvals.dat, and symops\_trans.dat.
-
+1. Fit VASP data with Fourier Series. ```dftintegrate -vasp -fit``` Note,
+this will simply produce some json data files, namely data.json and fit.json.
+Some intermediate files will also be created for the programs sake namely
+kmax.dat, kpts\_eigenvals.dat, and symops\_trans.dat.
 2. Integrate VASP data with rectangles and Gaussian Quadrature.
-    dftintegrate -vasp -integrate
-
-Note, this will produce integral.json.
-
-3. You only need to specify which DFT code was used if you need to create a data.json. If the json files needed already exsist and a DFT code was specified, the DFT code specifier will be ignored.
-    dftintegrate -fit
-g
-  1. Assuming I have a data.json I can just say -fit and it will use the data.json. The only files that are over written are the ones that correspond to a flag. If fit is specified, fit.json will be over written but data.json will not be, if it exsists it is used.
-  2. Assuming there is no data.json an error will be raised saying I need to specify a DFT code.
+```dftintegrate -vasp -integrate``` Note, this will produce integral.json.
+3. You only need to specify which DFT code was used if you need to create
+a data.json. If the json files needed already exsist and a DFT code was
+specified, the DFT code specifier will be ignored. ```dftintegrate -fit```
+  1. Assuming I have a data.json I can just say -fit and it will use the
+data.json. The only files that are over written are the ones that correspond
+to a flag. If fit is specified, fit.json will be over written but data.json
+will not be, if it exsists it is used.
+  2. Assuming there is no data.json an error will be raised saying I need to
+specify a DFT code.
   3. Look at Example 1, if there is already a data.json the vasp flag is ignored.
-
-4. You can run a convergence test comparing integration with rectangles to integration with Gaussian quadrature.
-    dftintegrate -vasp -converge -points 10
-
-This will integrate the Fourier representation with 1 integration point, 2 points, 3, ..., 10. Then plot how fast each technique converges to the right answer.
+4. You can run a convergence test comparing integration with rectangles to
+integration with Gaussian quadrature. ```dftintegrate -vasp -converge -points 10```
+This will integrate the Fourier representation with 1 integration point,
+2 points, 3, ..., 10. Then plot how fast each technique converges to the right answer.
 
 ### Note on kmax and KPOINTS
-Because we are creating a fit out of data points we run up against the
-Nyquist frequency, meaning we can only have so high of a frequency based on
-how many data points. For this this reason the kmax variable exists. It is
-pulled from the KPOINTS file. The problem is the VASP user has a few ways of
-formatting their KPOINTS file. If the fourth line is the specification of the
-size of kgrid ie 12 12 12 then everything will work fine. If not the user will
-need to make their KPOINTS file look like that or they can make kmax.dat. If
-12 12 12 was the grid than kmax = ceil(12/(2*sqrt(3))). dftintegrate automatically
-uses files if they exist so creating it will work.
+Because we are creating a fit out of data
+points we run up against the Nyquist frequency, meaning we can only
+have so high of a frequency in our Fourier representation based on how
+many data points we have. For this this reason the kmax variable
+exists. It is pulled from the KPOINTS file. The problem is the VASP
+user has a few ways of formatting their KPOINTS file. If the fourth
+line is the specification of the size of kgrid ie 12 12 12 then
+everything will work fine. If not the user will need to make their
+KPOINTS file look like that or they can make kmax.dat. If 12 12 12 was
+the grid than kmax = ceil(12/(2*sqrt(3))). dftintegrate automatically
+uses files if they exist so creating kmax.dat by hand will work.
