@@ -12,7 +12,7 @@ except ImportError:
     read_md = lambda f: open(f, 'r').read()
 
 setup(name='dftintegrate',
-      version='0.0.40',
+      version='0.1.0',
       description='Integrate DFT data',
       long_description=read_md('README.md'),
       author='Matthew M Burbidge',
@@ -27,7 +27,7 @@ setup(name='dftintegrate',
           "scipy",
       ],
       classifiers=[
-          'Development Status :: 2 - Pre-Alpha',
+          'Development Status :: 4 - Beta',
           'Intended Audience :: Science/Research',
           'Natural Language :: English',
           'License :: OSI Approved :: MIT License',
