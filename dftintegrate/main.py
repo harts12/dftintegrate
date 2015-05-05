@@ -3,8 +3,9 @@
 import argparse
 import os.path
 
+from dftintegrate.fourier import vaspdata, readdata, fitdata
+from dftintegrate.fourier import integratedata, converge
 from dftintegrate import msg
-from dftintegrate.fourier import vaspdata, readdata, fitdata, integratedata
 
 
 def examples():
@@ -56,18 +57,29 @@ def _parse_args():
     parser = argparse.ArgumentParser()
     parser.add_argument('-examples', help='See details on how to use program.',
                         action='store_true')
-    parser.add_argument('-vasp', help='As opposed to -qe for quatum espresso.'
+    parser.add_argument('-vasp', help='A DFT code to specify. As opposed to'
+                        ' -qe for quatum espresso'
                         ' data.', action='store_true')
-    parser.add_argument('-qe', help='Using qe data as opposed to vasp.',
+    parser.add_argument('-qe', help='A DFT code to specify. Using qe data'
+                        ' as opposed to vasp.',
                         action='store_true')
     parser.add_argument('-fit', help='Generate the Fourier fit in fit.json.',
                         action='store_true')
-    parser.add_argument('-read', help='Generate data.json',
+    parser.add_argument('-read', help='Generate data.json, needed by -fit.',
                         action='store_true')
-    parser.add_argument('-integrate', help='Generate integral.json.',
+    parser.add_argument('-integrate', help='Generate integral.json, must also'
+                        ' use -points INT.',
                         action='store_true')
-    parser.add_argument('-points', help='Number of integration points.')
-    parser.add_argument('-quiet', help='Supress output',
+    parser.add_argument('-converge', help='Loop over integration points, must'
+                        ' also use -points INT.',
+                        action='store_true')
+    parser.add_argument('-points', help='Number of integration points. Also'
+                        ' used as max number of integration points if converge'
+                        ' is called.')
+    parser.add_argument('-bands', help='Specify number of bands.', nargs='?',
+                        const='all', default='all')
+    parser.add_argument('-quiet', help='Supress info and warnings, still'
+                        ' prints error messages.',
                         action='store_true')
 
     args = parser.parse_args()
@@ -113,16 +125,10 @@ def read_data(args, path='./'):
     """
     bad = False
     if not os.path.exists(path+'kmax.dat'):
-        if not args.quiet:
-            msg.info('kmax.dat does not exist, attempting to create.')
         bad = True
     if not os.path.exists(path+'kpts_eigenvals.dat'):
-        if not args.quiet:
-            msg.info('kpts_eigenvals.dat does not exist, attempting to create.')
         bad = True
     if not os.path.exists(path+'symops_trans.dat'):
-        if not args.quiet:
-            msg.info('symops_trans.dat does not exist, attempting to create.')
         bad = True
     if bad:
         if args.vasp:
@@ -155,7 +161,10 @@ def get_fit(args, path='./'):
         if not args.quiet:
             msg.info('data.json does not exist, attempting to create.')
         read_data(args, path=path)
-    fitdata.FitData(path)
+    if args.bands == 'all':
+        fitdata.FitData(path)
+    else:
+        fitdata.FitData(path, bandnum=args.bands)
     if not args.quiet:
         msg.info('fit.json created.')
 
@@ -178,9 +187,43 @@ def integrate(args, path='./'):
         if not args.quiet:
             msg.info('fit.json does not exist, attempting to create.')
         get_fit(args, path=path)
-    integratedata.IntegrateData(path, args.points)
+    if not args.quiet:
+        msg.info('Calculating integral...')
+    if args.bands == 'all':
+        integratedata.IntegrateData(path, args.points)
+    else:
+        integratedata.IntegrateData(path, args.points, bandnum=args.bands)
     if not args.quiet:
         msg.info('integral.json created.')
+
+
+def get_converge(args, path='./'):
+    """
+    Call converge.py to generate a converge.json and a plot in the
+    indicated directory. Default path is the current directory.
+    """
+    if args.vasp or args.qe:
+        if os.path.exists(path+'fit.json') and not args.read:
+            if not args.quiet:
+                msg.warn('You specified vasp/qe but there is already a'
+                         ' fit.json, the vasp/qe flag will be ignored.'
+                         ' If you\'d like to make sure that vasp/qe data'
+                         ' is being used you can force it by using the read'
+                         ' flag then the fit flag, or erase data.json and'
+                         ' fit.json.')
+    if not os.path.exists(path+'fit.json'):
+        if not args.quiet:
+            msg.info('fit.json does not exist, attempting to create.')
+        get_fit(args, path=path)
+    if not args.quiet:
+        msg.info('Calculating integrals...')
+    if args.bands == 'all':
+        converge.Converge(path, args.points)
+    else:
+        converge.Converge(path, args.points, bandnum=args.bands)
+    if not args.quiet:
+        msg.info('converge.json created, plot created,'
+                 ' and some integralX.json\'s.')
 
 
 def main():
@@ -190,13 +233,27 @@ def main():
     if args.fit:
         get_fit(args)
     if args.integrate:
+        if args.converge:
+            msg.err('It makes no sense to call integrate AND converge.'
+                    ' Calling converge will automatically call integrate'
+                    ' for different numbers of integration points as'
+                    ' specified by points.')
+            exit(0)
         if not args.points:
             msg.err('If -integrate was specified you also need to specify'
                     ' -points for the number of integration points. Example'
                     ' -points 10.')
             exit(0)
         integrate(args)
-    elif not args.fit and not args.read and not args.integrate:
+    if args.converge:
+        if not args.points:
+            msg.err('If -converge was specified you also need to specify'
+                    ' -points for the max number of integration points.'
+                    ' Example: -points 10.')
+            exit(0)
+        get_converge(args)
+    elif not args.fit and not args.read and not args.integrate \
+            and not args.converge:
         msg.err('Need more command line arguments. You must specify a DFT code'
                 ' (-vasp or -qe) and/or an action i.e. -integrate or -read.')
         exit(0)

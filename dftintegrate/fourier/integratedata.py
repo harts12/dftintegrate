@@ -1,7 +1,7 @@
 """
 Classes::
-  IntegrateData -- The IntegrateData class is a collection of
-    functions that integrate the fit created by FitData.
+  IntegrateData --  A collection of functions that integrate the fit
+    created by FitData.
 """
 
 import numpy as np
@@ -10,7 +10,7 @@ from itertools import product
 from json import load, dump
 from scipy.special.orthogonal import p_roots
 
-from ..customserializer import tojson, fromjson
+from dftintegrate import customserializer as cs
 from dftintegrate.fourier import fitdata
 
 
@@ -19,15 +19,27 @@ class IntegrateData(object):
     fit.json.
 
     Variables::
+      name -- Path to directory with data to work on.
+
+      bandnum -- Number of bands to work on.
+
       data -- Data to integrate represented in fit.json.
 
       points -- Number of integration points i.e. number of rectangles.
 
-    Functions::
-      set_(recips, coeffs, num, bandnum) --
-        Set (recips, coeffs, num, bandnum) in case
-        loaddata is false. Intended use is for testing.
+      coeffs -- Fourier Coefficients in the Fourier series. "x" in the
+        equation to solve. A dictionary, the key is the band number and
+        the value is the list of coefficients for that band.
 
+      recips -- Reciprocal lattice vectors in the Fourier sum.
+
+      rectangleintegrals -- A list of the integral of each band using
+        the rectangle rule.
+
+      gaussintegrals -- A list of the integral of each band using
+        Gaussian quadrature.
+
+    Functions::
       _integrate -- Call the functions to run the integration scheme.
 
       _evaluatefit -- Take the Fourier representation of the band and
@@ -64,7 +76,7 @@ class IntegrateData(object):
         self.bandnum = bandnum
         with open(self.name+'fit.json', mode='r',
                   encoding='utf-8') as inf:
-            self.data = load(inf, object_hook=fromjson)
+            self.data = load(inf, object_hook=cs.fromjson)
         self.recips = self.data['reciprocals']
         self.coeffs = self.data['coefficients']
         self.rectangleintegrals = []
@@ -108,8 +120,8 @@ class IntegrateData(object):
         """
         b = self._evaluatefit()
         # For even functions do 8*np.power...
-        integral = np.power((self.end-self.start)/2,
-                              3)*sum(np.multiply(b, self.weights))
+        integral = np.power((self.end-self.start)/2, 3) * \
+            sum(np.multiply(b, self.weights))
         self.gaussintegrals.append(integral)
 
     def rectangles(self):
@@ -165,4 +177,4 @@ class IntegrateData(object):
                          'totalgaussintegral': sum(self.gaussintegrals)}
         with open(self.name+'integral.json', mode='w',
                   encoding='utf-8') as outf:
-            dump(integral_dict, outf, indent=2, default=tojson)
+            dump(integral_dict, outf, indent=2, default=cs.tojson)
