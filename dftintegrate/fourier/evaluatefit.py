@@ -29,7 +29,8 @@ class EvaluateFit(object):
       kgrid -- A list of lists. Each inner list is a triplet that
         represents a k-point. The outer list is the collection of
         the triplets or k-points and therefore represents the k-kgrid.
-        Note these are the irreducibl k-points.
+        This is set to the points you want to evaluate the fit at in 
+        "evaluate."
 
       series -- Matrix representation of the series. "A" in the equation
         to solve.
@@ -40,10 +41,14 @@ class EvaluateFit(object):
 
       recips -- Reciprocal lattice vectors in the Fourier sum.
 
-      lstsq_err -- Total least squares error for the fit.
-
     Funtions::
- 
+      __evaluatefit -- Generates "A" by calling FitData.gen_series
+        and sets "x" to the coeffs for a particular band. Solves for "b"
+        by finding the dot product of "A" and "x".
+
+      evaluate -- Sets kgrid to points you wish to evaluate fit at.
+        Recursively calls __evaluatefit according to specified number of
+        bands. Returns dictionary of results.
 
     """
 
