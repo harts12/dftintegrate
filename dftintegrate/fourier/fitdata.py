@@ -196,7 +196,6 @@ class FitData(object):
         self.lstsq_err = lstsq_err
 
     def serialize(self):
-        fit_dict = {'coefficients': self.coeffs, 'reciprocals': self.recips,
-                    'series': self.series}
+        fit_dict = {'coefficients': self.coeffs, 'reciprocals': self.recips}
         with open(self.name+'fit.json', mode='w', encoding='utf-8') as outf:
             dump(fit_dict, outf, indent=2, default=cs.tojson)
