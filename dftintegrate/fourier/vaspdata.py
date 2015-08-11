@@ -58,9 +58,19 @@ class VASPData(object):
         the OUTCAR is in.
         """
         name = self.name
-        call("grep -A 4 -E 'isymop' " + name + "/OUTCAR | cut -c 11-50 > " +
-             name + "/symops_trans.dat; echo '' >> " + name +
-             "/symops_trans.dat", shell=True)
+        symops = check_output("grep -A 2 -E 'isymop' " + name +
+                              "/OUTCAR | cut -c 11-", shell=True).decode("utf-8")
+        symops = symops.replace("\n\n", "\n")
+        symops = [list(map(eval, row.split())) for row in symops.splitlines()]
+        symops = [np.transpose(symops[i*3:(i+1)*3])
+                  for i in range(len(symops)//3)]
+        gtrans = check_output("grep 'gtrans' " + name + "/OUTCAR | cut -c 11-50",
+                              shell=True).decode("utf-8").splitlines()
+        with open(name + "/symops_trans.dat", 'w') as f:
+            for op, trans in zip(symops, gtrans):
+                for row in op:
+                    f.write("%2.d%4.d%4.d\n" % tuple(row))
+                f.write("\n%s\n\n" % trans)
 
     def extract_kpts_eigenvals(self):
         """"
